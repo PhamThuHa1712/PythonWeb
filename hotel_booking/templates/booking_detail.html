@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Details - {{ room.id }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+<div class="container mx-auto px-4 py-8">
+    <div class="flex items-center justify-between mb-8">
+        <h1 class="text-3xl font-bold">Booking Details</h1>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ status_label_class }}">
+            {{ booking.trangthai }}
+        </span>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Hotel and Room Info -->
+            <div class="bg-white rounded-lg border shadow-sm p-6 flex gap-4">
+                <img src="{{ hotel_image }}" alt="{{ hotel.tenkhachsan }}" class="h-24 w-24 object-cover rounded-md">
+                <div>
+                    <h2 class="text-xl font-semibold">{{ hotel.tenkhachsan }}</h2>
+                    <p class="text-gray-600">{{ hotel.quanhuyenquanhuyen.tenquanhuyen }}</p>
+                    <span class="inline-block mt-2 px-2 py-1 bg-gray-100 text-gray-800 rounded text-xs">{{ room.tenphong }}</span>
+                </div>
+            </div>
+
+            <!-- Dates -->
+            <div class="bg-white rounded-lg border shadow-sm p-6 grid grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-semibold">Check-in</h3>
+                    <p>{{ checkin_date }}</p>
+                    <p class="text-sm text-gray-600">From 2:00 PM</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold">Check-out</h3>
+                    <p>{{ checkout_date }}</p>
+                    <p class="text-sm text-gray-600">Until 12:00 PM</p>
+                </div>
+            </div>
+
+            <!-- Guest Info -->
+            <div class="bg-white rounded-lg border shadow-sm p-6">
+                <h3 class="font-semibold mb-4">Guest Information</h3>
+                <p><strong>Name:</strong> {{ user.tennguoidung }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Phone:</strong> {{ user.dienthoai }}</p>
+            </div>
+
+            <!-- Booking Info -->
+            <div class="bg-white rounded-lg border shadow-sm p-6">
+                <h3 class="font-semibold mb-4">Booking Info</h3>
+                <p><strong>Booking ID:</strong> {{ booking.lichsu_id }}</p>
+                <p><strong>Created:</strong> {{ booking.created_display }}</p>
+                <p><strong>Guests:</strong> {{ booking.guests }}</p>
+                <p><strong>Nights:</strong> {{ booking.nights }}</p>
+            </div>
+
+            <!-- Cancel Button -->
+            {% if booking.show_cancel %}
+            <form method="post" action="{% url 'bookings:cancel_booking' booking_id=booking.lichsu_id %}">
+                {% csrf_token %}
+                <button class="mt-4 px-4 py-2 border rounded bg-white text-gray-700 hover:bg-gray-100" onclick="return confirm('Cancel this booking?')">
+                    Cancel Booking
+                </button>
+            </form>
+            {% endif %}
+        </div>
+
+        <!-- Price Summary -->
+        <div class="bg-white rounded-lg border shadow-sm p-6 sticky top-8 space-y-4">
+            <h3 class="text-xl font-semibold">Price Summary</h3>
+            <div class="flex justify-between">
+                <span>Room ({{ booking.nights }} nights)</span>
+                <span>₫{{ room_rate }}</span>
+            </div>
+            <div class="flex justify-between">
+                <span>Taxes & Fees</span>
+                <span>₫{{ taxes }}</span>
+            </div>
+            <hr>
+            <div class="flex justify-between font-bold">
+                <span>Total</span>
+                <span>₫{{ total }}</span>
+            </div>
+
+            <div class="bg-gray-100 p-4 rounded">
+                <p class="text-sm font-medium">Payment Status</p>
+                <p class="text-green-600">{{ payment_status }}</p>
+            </div>
+            {% if payment_status == 'PENDING' %}
+                <a href="{% url 'bookings:payment' booking_id=booking.lichsu_id %}">Tiến hành thanh toán</a>
+            {% endif %}
+            
+            <a href="{{ invoice_url }}" class="block w-full text-center bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+                Download Invoice
+            </a>
+            <a href="{{ support_url }}" class="block w-full text-center border py-2 rounded hover:bg-gray-100">
+                Contact Support
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

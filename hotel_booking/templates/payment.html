@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Payment</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            {% comment %} <a href="{% url 'rooms:room_list' %}">Rooms</a> |
+            <a href="{% url 'bookings:booking_history' %}">Booking History</a> |
+            {% if user.is_authenticated %}
+                <span>Hi, {{ user.username }}</span>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %} {% endcomment %}
+        </nav>
+    </header>
+
+    <main>
+        <h1>Payment</h1>
+
+        <form method="post" action="{% url 'bookings:process_payment' booking_id=booking.lichsu_id %}">
+            {% csrf_token %}
+            <div>
+                <label>Booking ID:</label> {{ booking.lichsu_id }}
+            </div>
+            <div>
+                <label>Guest Name:</label> {{ booking.nguoidungnguoidung.tennguoidung }}
+            </div>
+            <div>
+                <label>Room:</label> {{ booking.phongphong.tenphong }} - {{ booking.phongphong.khachsankhachsan.tenkhachsan }}
+            </div>
+            <div>
+                <label>Check-in:</label> {{ booking.ngaydat }}
+            </div>
+            <div>
+                <label>Check-out:</label> {{ booking.ngaytra }}
+            </div>
+            <div>
+                <label>Total Price:</label> {{ booking.tongtien }} đ
+            </div>
+
+            <div>
+                <label>Credit Card Number:</label>
+                <input type="text" name="card_number" required />
+            </div>
+            <div>
+                <label>Expiration Date:</label>
+                <input type="month" name="expiration_date" placeholder="MM/YY" required />
+            </div>
+            <div>
+                <label>CVV:</label>
+                <input type="text" name="cvv" required />
+            </div>
+
+            <button type="submit">Pay Now</button>
+        </form>
+
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </main>
+</body>
+</html>
