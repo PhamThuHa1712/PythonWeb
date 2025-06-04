@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Đặt phòng</title>
+</head>
+<body>
+    <h1>Đặt phòng: {{ room.tenphong }}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label>Ngày check-in:</label>
+            <input type="date" name="checkin_date" required>
+        </div>
+        <div>
+            <label>Ngày check-out:</label>
+            <input type="date" name="checkout_date" required>
+        </div>
+        <button type="submit">Xác nhận đặt phòng</button>
+    </form>
+</body>
+</html>

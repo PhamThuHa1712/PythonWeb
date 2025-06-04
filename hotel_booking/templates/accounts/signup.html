@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="{% static 'signup.css' %}" />
+</head>
+<body>
+  <div class="signup-container">
+    <a href="{% url 'accounts:login' %}" class="back-link">← Back</a>
+    <h1 class="signup-title">Sign Up</h1>
+    <p class="signup-subtitle">Create your account to get started</p>
+
+    <div class="signup-box">
+      <h2>Create your account</h2>
+      <p>Fill in your information to create a new account</p>
+      <form id="registerForm" method="post" action="{% url 'accounts:signup' %}">
+        {% csrf_token %}
+        
+        <label>Email</label>
+        <input type="email" name="email" id="email" placeholder="example@email.com" required />
+
+        <label>Full Name</label>
+        <input type="text" name="fullname" id="fullname" placeholder="Enter your full name" required />
+
+        <label>Password</label>
+        <input type="password" name="password" id="password" placeholder="Create a password" required />
+
+        <label>Confirm Password</label>
+        <input type="password" name="repassword" id="repassword" placeholder="Confirm your password" required />
+
+        <label>Phone Number</label>
+        <input type="text" name="phone" id="phone" placeholder="+84 123 456 789" />
+
+        <button type="submit" class="signup-button">Sign Up</button>
+        <p id="message">{% if messages %}{% for msg in messages %}<span style="color: red;">{{ msg }}</span>{% endfor %}{% endif %}</p>
+      </form>
+    </div>
+
+    <p class="login-link">Already have an account? <a href="{% url 'accounts:login' %}">Login here</a></p>
+  </div>
+
+  <script src="{% static 'signup.js' %}"></script>
+</body>
+</html>
