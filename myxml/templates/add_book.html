@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Thêm sách mới vào file XML</h2>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <label for="title">Tiêu đề:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="author">Tác giả:</label><br>
+        <input type="text" id="author" name="author" required><br><br>
+
+        <label for="year">Năm xuất bản:</label><br>
+        <input type="text" id="year" name="year" required><br><br>
+
+        <button type="submit">Thêm sách</button>
+    </form>
+    <p><a href="{% url 'library:view_xml' %}">Xem danh sách sách</a></p>
+    <p><a href="{% url 'library:edit_book' %}">Chỉnh sửa danh sách sách</a></p>
+</body>
+</html>

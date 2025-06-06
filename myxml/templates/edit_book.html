@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Danh sách sách:</h2>
+    {% if books %}
+        <table>
+            <tr>
+                <th>Tiêu đề</th>
+                <th>Tác giả</th>
+                <th>Năm XB</th>
+                <th>Hành động</th>
+            </tr>
+            {% for x in books %}
+                <tr>
+                    <td>{{ x.title }}</td>
+                    <td>{{ x.author }}</td>
+                    <td>{{ x.year }}</td>
+                    <td>
+                        <form method = "POST" action="{% url 'library:edit_book' %}">
+                            {% csrf_token%}
+                            <input type="hidden" name = "title_delete" value="{{x.title}}">
+                            <button type="submit" onclick="return confirm('Bạn có chắc muốn xoá sách này?')">Xoá</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <p><a href="{% url 'library:add_book' %}">Thêm sách mơi</a></p>
+    <p><a href="{% url 'library:view_xml' %}">Xem danh sách sách</a></p>
+</body>
+</html>
